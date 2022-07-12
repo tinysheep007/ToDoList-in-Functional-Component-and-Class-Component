@@ -6,20 +6,20 @@ const { v4: uuidv4 } = require('uuid');
 
 export default function TodoApp() {
 
-    const todos = [
+    const todos = JSON.parse(window.localStorage.getItem("todos") || [
         {
             id: uuidv4(), todo: "finish hw", completed: false
         },
         {
             id: uuidv4(), todo: "watch kasui chan", completed: true
         }
-    ]
+    ])
 
     let [todo, setTodo] = useState(todos);
 
-    useEffect(()=>{
-        window.localStorage.setItem("todos",JSON.stringify(todo))
-    })
+    useEffect(() => {
+        window.localStorage.setItem("todos", JSON.stringify(todo))
+    }, [todo])
 
     const addToDo = (newTodo) => (
         setTodo([...todo, {
@@ -41,9 +41,9 @@ export default function TodoApp() {
         setTodo(newTodo);
     }
 
-    const editTodo = (id, editedTodo) =>{
-        const newTodo = todo.map((t)=>(
-            t.id === id ? {...t, todo:editedTodo } : t
+    const editTodo = (id, editedTodo) => {
+        const newTodo = todo.map((t) => (
+            t.id === id ? { ...t, todo: editedTodo } : t
         ))
         setTodo(newTodo)
     }
@@ -52,7 +52,7 @@ export default function TodoApp() {
         <div>
             functional component
             <TodoForm addToDo={addToDo} />
-            <TodoList todos={todo} removeTodo={removeTodo} toggleTodo={toggleTodo} editTodo={editTodo}/>
+            <TodoList todos={todo} removeTodo={removeTodo} toggleTodo={toggleTodo} editTodo={editTodo} />
         </div>
     )
 }
