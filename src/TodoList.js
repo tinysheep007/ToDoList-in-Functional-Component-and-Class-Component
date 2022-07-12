@@ -6,12 +6,13 @@ export default function TodoList(props) {
             {
                 props.todos.map((todo, i) => (
 
-                    <TodoItem ket={i}
+                    <TodoItem key={i}
                         todo={todo.todo}
                         completed={todo.completed}
                         id={todo.id}
                         removeTodo = {props.removeTodo} 
                         toggleTodo = {props.toggleTodo}
+                        editTodo = {props.editTodo}
                     />
 
 

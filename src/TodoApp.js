@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TodoList from "./TodoList";
 import TodoForm from "./TodoForm";
 const { v4: uuidv4 } = require('uuid');
+
+
 export default function TodoApp() {
-
-
 
     const todos = [
         {
@@ -16,6 +16,10 @@ export default function TodoApp() {
     ]
 
     let [todo, setTodo] = useState(todos);
+
+    useEffect(()=>{
+        window.localStorage.setItem("todos",JSON.stringify(todo))
+    })
 
     const addToDo = (newTodo) => (
         setTodo([...todo, {
@@ -37,12 +41,18 @@ export default function TodoApp() {
         setTodo(newTodo);
     }
 
+    const editTodo = (id, editedTodo) =>{
+        const newTodo = todo.map((t)=>(
+            t.id === id ? {...t, todo:editedTodo } : t
+        ))
+        setTodo(newTodo)
+    }
 
     return (
         <div>
             functional component
             <TodoForm addToDo={addToDo} />
-            <TodoList todos={todo} removeTodo={removeTodo} toggleTodo={toggleTodo} />
+            <TodoList todos={todo} removeTodo={removeTodo} toggleTodo={toggleTodo} editTodo={editTodo}/>
         </div>
     )
 }
